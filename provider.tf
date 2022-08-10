@@ -10,4 +10,9 @@ terraform {
 # Configure the AWS Provider
 provider "aws" {
   region  = "us-east-1"
+  profile = var.aws_profile
+}
+
+provider "kubernetes" {
+  config_path = "~/.kube/config"
 }

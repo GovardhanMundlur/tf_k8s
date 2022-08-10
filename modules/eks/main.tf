@@ -53,10 +53,10 @@ resource "aws_iam_role_policy_attachment" "example-AmazonEKSVPCResourceControlle
 
 
 ###
-## eks creation
+# eks creation
 ###
 resource "aws_eks_cluster" "wordpress_k8" {
-  name     = "test"
+  name     = var.cluster_name
   role_arn = aws_iam_role.eks_role.arn
   vpc_config {
     subnet_ids = [var.subnet1, var.subnet2]
@@ -120,4 +120,11 @@ resource "aws_eks_node_group" "wordpress_eks_ng" {
     aws_iam_role_policy_attachment.example-AmazonEC2ContainerRegistryReadOnly,
     aws_iam_role_policy_attachment.example-AmazonEKSWorkerNodePolicy
   ]
+}
+
+resource "null_resource" "kubeconfig_file" {
+  provisioner "local-exec" {
+    command = "aws eks update-kubeconfig --region ${var.region} --name ${var.cluster_name} --profile ${var.aws_profile}"
+  }
+  depends_on = [aws_eks_node_group.wordpress_eks_ng]
 }

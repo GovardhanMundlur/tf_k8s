@@ -5,3 +5,15 @@ variable "subnet1" {
 variable "subnet2" {
   type = string
 }
+
+variable "region" {
+  type = string
+}
+
+variable "aws_profile" {
+  type = string
+}
+
+variable "cluster_name" {
+  type = string
+}
