@@ -23,3 +23,11 @@ resource "helm_release" "istiod" {
     value = "/dev/stdout"
   }
 }
+
+resource "helm_release" "istio_ingress" {
+  name       = "istio-ingress"
+  repository = "https://istio-release.storage.googleapis.com/charts"
+  chart      = "gateway"
+  namespace  = kubernetes_namespace.istio.metadata.0.name
+  depends_on = [ helm_release.istio_base, helm_release.istiod ]
+}
